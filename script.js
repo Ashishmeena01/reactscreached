@@ -1,34 +1,37 @@
 class Component {
     constructor(states) {
-        this.count = 0;
+        this.states = states;
     }
 
-    render(){
-        const fn = this.upDateState.bind(this);
+    render(){ 
 
+        this.mount();
         return `<div>
-            <div>Hello from the screached react ${this.count}</div>
+            <div>Hello from the screached react ${this.states.count?this.states.count:0}</div>
             <button onclick="upd()">Add</button>
-        </div>`
+        </div>` 
     }
 
-
-
-    upDateState(){
-        this.count++;
-        console.log(this.count);
-        golbalRender();
+    mount() {
+        console.log("this component is mounted")
     }
 
 }
 
 
+let state = {
+    count:0,
+}
 
 const body = document.getElementById("main");
-const main = new Component(0);
+const main = new Component(state);
+
+
 const child = [main];
-function upd(cn) {
-    child[0].upDateState();    
+
+function upd(fn) {
+    state.count++;
+    golbalRender()    
 }
 
 function golbalRender() {
