@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React Screached</title>
+
 </head>
 
 
 <body id="main">
-    <button onclick="alert('hello')">hello</button>
+    <div id="root"></div>
+    <svg id="interactive-svg" width="200" height="200">
+        <circle id="target-node" cx="100" cy="100" r="20" fill="#2196F3" />
+    </svg>
+    
+    <script>
+        const node = document.getElementById('target-node');
+
+        node.addEventListener('click', () => {
+            // Native Web Animations API (WAAPI)
+            node.animate([
+                { transform: 'scale(1)', fill: '#2196F3' },
+                { transform: 'scale(1.8)', fill: '#FF9800' },
+                { transform: 'scale(1)', fill: '#2196F3' }
+            ], {
+                duration: 600,
+                easing: 'ease-out'
+            });
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 

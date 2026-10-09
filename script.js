@@ -1,47 +1,38 @@
-class Component {
-    constructor(states) {
-        this.states = states;
+class ReactComponent{
+    constructor(htmlEleType,props,children,state){
+        this.htmlEleType =htmlEleType;
+        this.props = props;
+        this.state = state;
+        this.children = children;
+        this.ele = document.createElement(this.htmlEleType);
+        this.elea
+        this.ele.addEventListener("click",(e)=>{this.state.count += 1;this.render()})
     }
 
-    render(){ 
-
-        this.mount();
-        return `<div>
-            <div>Hello from the screached react ${this.states.count?this.states.count:0}</div>
-            <button onclick="upd()">Add</button>
-        </div>` 
+    render(){
+        let count = this.state.count;
+        this.ele.innerHTML = `this is chilren children ${count}`;
+        return this.ele;    
     }
+}
 
-    mount() {
-        console.log("this component is mounted")
+
+class Div extends ReactComponent{
+    constructor(...props){
+        console.log(props)
+        super(...props)
     }
+}
 
+const div = new Div("Button","h","chalo door kahin",{count:10})
+
+function render(comp){
+    const ele = document.getElementById("root");
+    ele.appendChild(comp.render());
 }
 
 
-let state = {
-    count:0,
-}
-
-const body = document.getElementById("main");
-const main = new Component(state);
+const comp = new ReactComponent("div","hello","i am here to rule",{count:0});
 
 
-const child = [main];
-
-function upd(fn) {
-    state.count++;
-    golbalRender()    
-}
-
-function golbalRender() {
-    if(!child ) return;
-    let content = "";
-    child.forEach(element => {
-        content += element.render();
-    });
-    body.innerHTML = "";
-    body.innerHTML = content;
-}
-
-golbalRender();
+render(div);
