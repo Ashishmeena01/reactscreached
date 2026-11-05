@@ -7,8 +7,6 @@ function execute() {
     
     if(root){
         button.mount(root);
-        button.mount(root);
-        button.mount(root);
     }
 
 }

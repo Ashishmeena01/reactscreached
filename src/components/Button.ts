@@ -1,9 +1,12 @@
 import { Component } from "@/core/Component.js"
-
+import { useState } from "@/core/hook.js";
 
 export class Button extends Component {
+    private _count = useState(0,this) ;
+
+
     render(): string {
-        return `<button class="Button">Click me</button>`;
+        return `<button class="Button">${this._count.get()}</button>`;
     }
 
     style(): string {
@@ -19,4 +22,16 @@ export class Button extends Component {
             }
         }`;
     }
+
+    onMount(){
+        console.log("Button mounted");
+    }
 }
+
+
+/*
+
+Button -> val
+
+
+*/

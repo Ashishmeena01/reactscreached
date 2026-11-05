@@ -1,8 +1,8 @@
 
 
 export abstract class Component {
-    private _elementHtml: HTMLElement | null = null;
-    private _elementCss: CSSStyleSheet | null = null;
+    protected _elementHtml: HTMLElement | null = null;
+    protected _elementCss: CSSStyleSheet | null = null;
 
     abstract render(): string;
     abstract style(): string;
@@ -15,12 +15,25 @@ export abstract class Component {
             root.appendChild(template.content);
             this._elementHtml = template.content.firstElementChild as HTMLElement;
         }
+
+        this.onMount();
+    }
+
+    onMount(){}
+    onUnmount(){}
+
+    rerender(){
+        console.log("rerendering");
+        this.onUnmount();
+        this.unmount();
+        this.mount(this._elementHtml?.parentElement || null);
     }
 
     unmount(): void {
         this._elementHtml?.remove();
         this._elementHtml = null;
     }
+
 
     _injectCss(): void {
         const key = this.constructor.name;
@@ -33,7 +46,7 @@ export abstract class Component {
         const styleElement = document.createElement('style');
         styleElement.dataset["id"] = this.constructor.name;
         styleElement.appendChild(document.createTextNode(style));
-        head.appendChild(styleElement);
         this._elementCss = styleElement.sheet;
+        head.appendChild(styleElement);
     }
 }
