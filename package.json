@@ -1,0 +1,26 @@
+{
+  "name": "reactscratch",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev:ts": "esbuild src/main.ts --bundle --tsconfig=tsconfig.json --outfile=./dist/assets/main.js --format=cjs --sourcemap --watch",
+    "dev:typecheck": "tsc --noEmit --watch --preserveWatchOutput",
+    "dev:css": "npx @tailwindcss/cli -i ./src/css/input.css -o ./dist/assets/output.css --watch",
+    "dev:serve": "browser-sync start --server --single --files \"dist/**/*.js,dist/**/*.css,index.html\" --no-notify --port 3000",
+    "dev": "concurrently \"npm run dev:ts\" \"npm run dev:typecheck\" \"npm run dev:css\" \" npm run dev:serve \" --names \"ESB,TSC,CSS,BS\" --prefix-colors \"cyan,blue,green,yellow\"",
+    "build": "tsc --noEmit && esbuild src/main.ts --bundle --tsconfig=tsconfig.json --outfile=./dist/assets/main.js --format=esm --minify && npx @tailwindcss/cli -i ./src/css/input.css -o ./dist/assets/output.css"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "browser-sync": "^3.0.4",
+    "concurrently": "^10.0.6",
+    "esbuild": "^0.28.2",
+    "serve": "^14.2.6"
+  }
+}
