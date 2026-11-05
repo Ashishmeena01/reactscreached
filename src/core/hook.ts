@@ -11,7 +11,7 @@ type state = {
 }
 
 export function useState<T>(val:T | undefined = undefined,comp:Component):any{
-    console.log("useState called");
+
     if(!comp){
         throw new Error("no parent found hooks should be called under the React componets");
     }

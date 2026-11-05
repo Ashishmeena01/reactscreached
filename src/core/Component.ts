@@ -24,7 +24,7 @@ export abstract class Component {
     }
 
     onUnmount() {
-        console.log("onUnmount called");
+        // console.log("onUnmount called");
     }
 
     rerender() {
@@ -46,7 +46,8 @@ export abstract class Component {
 
     _injectCss(): void {
         const key = this.constructor.name;
-        if (document.head.dataset["id"] === key) {
+
+        if (document.head.querySelector(`style[data-id="${key}"]`)) {
             return;
         }
         const style = this.style();
@@ -55,7 +56,6 @@ export abstract class Component {
         styleElement.dataset["id"] = this.constructor.name;
         styleElement.appendChild(document.createTextNode(style));
         head.appendChild(styleElement);
-        console.log(styleElement.sheet instanceof CSSStyleSheet);
         this._elementCss = styleElement.sheet instanceof CSSStyleSheet ? styleElement.sheet : null;
     }
 }
