@@ -10,16 +10,24 @@ type state = {
     set:setState<any>
 }
 
-export function useState<T>(val:T | undefined = undefined,comp:Component):state{
+export function useState<T>(val:T | undefined = undefined,comp:Component):any{
     console.log("useState called");
     if(!comp){
         throw new Error("no parent found hooks should be called under the React componets");
     }
 
-    let stateVal = val;
-    
-    const get:getState<T> = () => {
-        return comp. as T;
+    const state = {
+        value:val,
+        get: function(){
+            return this.value;
+        },
+        set: function(newVal: (val:T | undefined) => (T | undefined) | T){
+            let nxtval = typeof newVal === "function" ? newVal(this.value) : newVal;
+            if(nxtval === this.value) return;
+            this.value = nxtval;
+            comp.rerender();
+        }
     }
-  return {}
+
+    return state;
 }

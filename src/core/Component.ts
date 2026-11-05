@@ -7,26 +7,35 @@ export abstract class Component {
     abstract render(): string;
     abstract style(): string;
 
-    mount(root: HTMLElement | null): void{
-        if(root){
+    mount(root: HTMLElement | null): void {
+        if (root) {
             this._injectCss();
             const template = document.createElement("template");
             template.innerHTML = this.render();
-            root.appendChild(template.content);
             this._elementHtml = template.content.firstElementChild as HTMLElement;
+            root.appendChild(template.content.firstElementChild as HTMLElement);
+            
         }
 
         this.onMount();
     }
 
-    onMount(){}
-    onUnmount(){}
+    onMount() {
+    }
 
-    rerender(){
-        console.log("rerendering");
+    onUnmount() {
+        console.log("onUnmount called");
+    }
+
+    rerender() {
         this.onUnmount();
-        this.unmount();
-        this.mount(this._elementHtml?.parentElement || null);
+
+        const partent = this._elementHtml?.parentElement;
+
+        if (partent) {
+            this.unmount();
+            this.mount(partent);
+        }
     }
 
     unmount(): void {
@@ -37,7 +46,6 @@ export abstract class Component {
 
     _injectCss(): void {
         const key = this.constructor.name;
-        console.log(key);
         if (document.head.dataset["id"] === key) {
             return;
         }
@@ -46,7 +54,8 @@ export abstract class Component {
         const styleElement = document.createElement('style');
         styleElement.dataset["id"] = this.constructor.name;
         styleElement.appendChild(document.createTextNode(style));
-        this._elementCss = styleElement.sheet;
         head.appendChild(styleElement);
+        console.log(styleElement.sheet instanceof CSSStyleSheet);
+        this._elementCss = styleElement.sheet instanceof CSSStyleSheet ? styleElement.sheet : null;
     }
 }
